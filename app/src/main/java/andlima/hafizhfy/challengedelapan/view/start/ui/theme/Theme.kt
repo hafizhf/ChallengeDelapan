@@ -1,4 +1,4 @@
-package andlima.hafizhfy.challengedelapan.ui.theme
+package andlima.hafizhfy.challengedelapan.view.start.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -7,14 +7,14 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
 private val DarkColorPalette = darkColors(
-    primary = Main,
-    primaryVariant = Main,
+    primary = Purple200,
+    primaryVariant = Purple700,
     secondary = Teal200
 )
 
 private val LightColorPalette = lightColors(
-    primary = Main,
-    primaryVariant = Main,
+    primary = Purple500,
+    primaryVariant = Purple700,
     secondary = Teal200
 
     /* Other default colors to override

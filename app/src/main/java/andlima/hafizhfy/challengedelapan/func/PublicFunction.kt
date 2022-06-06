@@ -4,6 +4,7 @@ import andlima.hafizhfy.challengedelapan.R
 import andlima.hafizhfy.challengedelapan.di.UserClient
 import andlima.hafizhfy.challengedelapan.local.datastore.UserManager
 import andlima.hafizhfy.challengedelapan.model.user.GetUserItem
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -19,6 +20,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.asLiveData
 import com.google.android.material.snackbar.Snackbar
@@ -47,8 +51,22 @@ fun snackbarLong(view: View, message: String) {
     snack.show()
 }
 
+// Function to easy making SnackBar ----------------------------------------------------------------
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+fun SnackbarShort(message: String) {
+    val scaffoldState = rememberScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
+
+    coroutineScope.launch {
+        val snack = scaffoldState.snackbarHostState.showSnackbar(
+            message
+        )
+    }
+}
+
 // Funtion to easy making Snackbar with custom action ----------------------------------------------
-fun snackbarCustom(view: View, message: String, buttonText: String, action: Any.() -> Unit) {
+fun snackbarCustomAction(view: View, message: String, buttonText: String, action: Any.() -> Unit) {
     val snack = Snackbar.make(view, message, Snackbar.LENGTH_LONG)
     snack.setAction(buttonText) {
         action(true)
@@ -78,37 +96,6 @@ fun alertDialog(context: Context, title: String, message: String, action: Any.()
         }
         .setCancelable(false)
         .show()
-}
-
-// Function to hide all error pop up ---------------------------------------------------------------
-fun hideAllPopUp(cardView1: CardView, cardView2: CardView) {
-    cardView1.visibility = View.GONE
-    cardView2.visibility = View.GONE
-}
-
-// Function to show error pop up -------------------------------------------------------------------
-fun showPopUp(cardViewID: CardView, textViewID: TextView, message: String) {
-    cardViewID.visibility = View.VISIBLE
-    textViewID.text = message
-}
-
-// Function to hide error pop up -------------------------------------------------------------------
-fun hidePopUp(cardViewID: CardView) {
-    cardViewID.visibility = View.GONE
-}
-
-// Function to show password on password EditText --------------------------------------------------
-fun showPassword(editText: EditText, imageView: ImageView) {
-    val hidden = PasswordTransformationMethod.getInstance()
-    val show = HideReturnsTransformationMethod.getInstance()
-
-    if (editText.transformationMethod == hidden) {
-        editText.transformationMethod = show
-        imageView.setImageResource(R.drawable.ic_eye_off)
-    } else {
-        editText.transformationMethod = hidden
-        imageView.setImageResource(R.drawable.ic_eye)
-    }
 }
 
 // IMAGE CONVERT METHOD ############################################################################
