@@ -7,6 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.tooling.preview.Preview
 import andlima.hafizhfy.challengedelapan.ui.theme.ChallengeDelapanTheme
+import andlima.hafizhfy.challengedelapan.view.main.HomeActivity
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
@@ -87,6 +88,12 @@ private fun Login() {
         ButtonMain("Login") {
             isPasswordError = password != "asd"
             isEmailError = email != "admin@gmail.com"
+
+            if (!isEmailError && !isPasswordError) {
+                val gotoLogin = Intent(context, HomeActivity::class.java)
+                gotoLogin.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK) // since idk how to finish(), hopefully this is good
+                context.startActivity(gotoLogin)
+            }
         }
 
         Spacer(modifier = Modifier.padding(bottom = 5.dp))

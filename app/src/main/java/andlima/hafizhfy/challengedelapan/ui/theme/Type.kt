@@ -19,8 +19,7 @@ val Typography = Typography(
     h1 = TextStyle(
         fontFamily = ProductSans,
         fontWeight = FontWeight.Bold,
-        fontSize = 24.sp,
-        color = MainGrey
+        fontSize = 24.sp
     ),
     h2 = TextStyle(
         fontFamily = ProductSans,
