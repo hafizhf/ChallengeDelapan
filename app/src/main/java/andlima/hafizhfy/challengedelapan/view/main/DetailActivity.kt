@@ -1,6 +1,7 @@
 package andlima.hafizhfy.challengedelapan.view.main
 
 import andlima.hafizhfy.challengedelapan.R
+import andlima.hafizhfy.challengedelapan.func.toast
 import andlima.hafizhfy.challengedelapan.model.Coba
 import andlima.hafizhfy.challengedelapan.ui.component.*
 import andlima.hafizhfy.challengedelapan.ui.theme.*
@@ -15,14 +16,19 @@ import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalProvider
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
@@ -66,8 +72,8 @@ fun HeaderDetailCollapsingToolbar(coba: Coba) {
 
     Column {
         // max(after, before)
-        val imageHeight by animateDpAsState(targetValue = max(120.dp, 500.dp*scrollOffset))
-        val cobaAlpha by animateFloatAsState(targetValue = max(0.0F, 1.0F*scrollOffset))
+        val imageHeight by animateDpAsState(targetValue = max(120.dp, 600.dp*scrollOffset))
+        val buttonAlpha by animateFloatAsState(targetValue = max(0.0F, 1.0F*scrollOffset))
 
         Box(
             modifier = Modifier
@@ -79,36 +85,73 @@ fun HeaderDetailCollapsingToolbar(coba: Coba) {
                 contentDescription = "thumbnail",
                 contentScale = ContentScale.Crop
             )
-            Row(modifier = Modifier.align(Alignment.BottomStart)) {
-                Column(
-                    modifier = Modifier
-                        .width(IntrinsicSize.Max)
-                        .height(IntrinsicSize.Min)
-                        .padding(20.dp)
-                ) {
-                    H2(text = coba.title, color = Color.White)
-                    H4(text = coba.yearRelease, color = Color.White)
-                }
-
-                Spacer(modifier = Modifier.weight(1.0F))
-
-                Card(
-                    backgroundColor = Main,
-                    modifier = Modifier
-                        .width(100.dp)
-                        .height(200.dp)
-                        .alpha(cobaAlpha)
-                ) {}
+            Row(
+                verticalAlignment = Alignment.Bottom,
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .padding(20.dp)
+            ) {
+                Title(coba = coba, buttonAlpha = buttonAlpha)
             }
         }
     }
+    Description(scrollState)
+}
 
+@Composable
+fun Title(coba: Coba, buttonAlpha: Float) {
+    val context = LocalContext.current
+    Row(verticalAlignment = Alignment.Bottom) {
+        Column(
+            verticalArrangement = Arrangement.Bottom,
+            modifier = Modifier
+                .width(150.dp)
+        ) {
+            H2(text = coba.title, color = Color.White)
+            H4(text = coba.yearRelease, color = Color.White)
+        }
+
+        Spacer(modifier = Modifier.weight(1.0F))
+
+        Card(
+            border = BorderStroke(1.dp, Color.White),
+            backgroundColor = Color.Transparent,
+            elevation = 0.dp,
+            shape = RoundedCornerShape(100),
+            modifier = Modifier
+                .shadow(0.dp)
+                .alpha(buttonAlpha)
+                .clickable(enabled = buttonAlpha >= 0.3F) {
+                    toast(context, "Button clicked!")
+                }
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .width(150.dp)
+                    .height(50.dp)
+                    .padding(end = 8.dp)
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.ic_play),
+                    contentDescription = "Play",
+                    modifier = Modifier.padding(end = 3.dp)
+                )
+                H4(text = "Watch now", color = Color.White)
+            }
+        }
+    }
+}
+
+@Composable
+fun Description(scrollState: LazyListState) {
     LazyColumn(
         state = scrollState
     ) {
         item {
             Column(Modifier.padding(20.dp)) {
-                Spacer(modifier = Modifier.padding(bottom = 200.dp))
+                Spacer(modifier = Modifier.padding(bottom = 180.dp))
                 Body1(text = "Aasdgsagdasdg sadgasdgasd gasdga sdgx zcbvxc b sfedb dsfgb asdf awefasdg b")
                 Spacer(modifier = Modifier.padding(bottom = 700.dp))
             }
