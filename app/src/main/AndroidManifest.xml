@@ -12,6 +12,11 @@
         android:theme="@style/Theme.ChallengeDelapan"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.main.DetailActivity"
+            android:exported="true"
+            android:label="@string/title_activity_detail"
+            android:theme="@style/Theme.ChallengeDelapan.NoActionBar" />
+        <activity
             android:name=".view.main.HomeActivity"
             android:exported="true"
             android:label="@string/title_activity_home"
