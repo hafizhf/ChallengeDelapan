@@ -8,8 +8,12 @@ import andlima.hafizhfy.challengedelapan.ui.theme.*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.rememberScrollableState
 import androidx.compose.foundation.gestures.scrollable
@@ -99,7 +103,7 @@ fun HeaderDetailCollapsingToolbar(coba: Coba) {
 }
 
 @Composable
-fun Title(coba: Coba, buttonAlpha: Float) {
+private fun Title(coba: Coba, buttonAlpha: Float) {
     val context = LocalContext.current
     Row(verticalAlignment = Alignment.Bottom) {
         Column(
@@ -145,7 +149,7 @@ fun Title(coba: Coba, buttonAlpha: Float) {
 }
 
 @Composable
-fun Description(scrollState: LazyListState) {
+private fun Description(scrollState: LazyListState) {
     LazyColumn(
         state = scrollState
     ) {

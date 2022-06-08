@@ -1,11 +1,16 @@
 package andlima.hafizhfy.challengedelapan.view.start
 
+import andlima.hafizhfy.challengedelapan.di.UserClient
+import andlima.hafizhfy.challengedelapan.func.toast
+import andlima.hafizhfy.challengedelapan.model.user.GetUserItem
+import andlima.hafizhfy.challengedelapan.model.user.RequestUser
 import andlima.hafizhfy.challengedelapan.ui.component.*
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.tooling.preview.Preview
 import andlima.hafizhfy.challengedelapan.ui.theme.ChallengeDelapanTheme
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.layout.*
@@ -19,6 +24,11 @@ import kotlinx.coroutines.launch
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.compose.runtime.saveable.rememberSaveable
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import retrofit2.Call
+import retrofit2.Response
 
 
 class RegisterActivity : ComponentActivity() {
@@ -73,33 +83,49 @@ private fun Register() {
             passwordError = password == ""
             rePasswordError = rePassword == ""
 
-            when {
-                username == "" -> {
-                    usernameError = true
-                }
-                email == "admin@gmail.com" -> {
-                    emailError = true
-                }
-                password.length < 8 -> {
-                    passwordError = true
-                }
-                rePassword != password -> {
-                    rePasswordError = true
-                }
-                !usernameError && !emailError && !passwordError && !rePasswordError -> {
-                    coroutineScope.launch {
-                        val snack = scaffoldState.snackbarHostState.showSnackbar(
-                            "Register success"
-                        )
-                        when (snack) {
-                            SnackbarResult.Dismissed -> Log.d("SnackbarDemo", "Dismissed")
-                            SnackbarResult.ActionPerformed -> Log.d("SnackbarDemo", "Snackbar button clicked")
+//            when {
+//                username == "" -> {
+//                    usernameError = true
+//                }
+//                email == "admin@gmail.com" -> {
+//                    emailError = true
+//                }
+//                password.length < 8 -> {
+//                    passwordError = true
+//                }
+//                rePassword != password -> {
+//                    rePasswordError = true
+//                }
+//                !usernameError && !emailError && !passwordError && !rePasswordError -> {
+//                    coroutineScope.launch {
+//                        val snack = scaffoldState.snackbarHostState.showSnackbar(
+//                            "Register success"
+//                        )
+//                        when (snack) {
+//                            SnackbarResult.Dismissed -> Log.d("SnackbarDemo", "Dismissed")
+//                            SnackbarResult.ActionPerformed -> Log.d("SnackbarDemo", "Snackbar button clicked")
+//                        }
+//                    }
+//
+//                    val gotoLogin = Intent(context, LoginActivity::class.java)
+//                    gotoLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK) // since idk how to finish(), hopefully this is good
+//                    context.startActivity(gotoLogin)
+//                }
+//            }
+
+            if (username != "" && email != "" && password != "" && rePassword != "") {
+                GlobalScope.launch {
+                    registerAuth(context, username, email, password, rePassword) { emailResult, passwordResult, rePasswordResult ->
+                        emailError = emailResult
+                        passwordError = passwordResult
+                        rePasswordError = rePasswordResult
+
+                        if (!usernameError && !emailError && !passwordError && !rePasswordError) {
+                            val gotoLogin = Intent(context, LoginActivity::class.java)
+                            gotoLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK) // since idk how to finish(), hopefully this is good
+                            context.startActivity(gotoLogin)
                         }
                     }
-
-                    val gotoLogin = Intent(context, LoginActivity::class.java)
-                    gotoLogin.addFlags(FLAG_ACTIVITY_CLEAR_TASK or FLAG_ACTIVITY_NEW_TASK) // since idk how to finish(), hopefully this is good
-                    context.startActivity(gotoLogin)
                 }
             }
         }
@@ -123,4 +149,86 @@ private fun DefaultPreview2() {
     ChallengeDelapanTheme {
         Register()
     }
+}
+
+// END OF UI CODE ===============================================================================###
+
+private suspend fun registerAuth(
+    context: Context,
+    username: String,
+    email: String,
+    password: String,
+    rePassword: String,
+    validationError: (
+        emailError: Boolean,
+        passwordError: Boolean,
+        rePasswordError: Boolean
+    ) -> Unit
+) {
+    val validationResult = GlobalScope.async { emailValidation(email) }
+    val emailFound = validationResult.await()
+
+    when {
+        emailFound < 0 || emailFound > 0 -> {
+            validationError(true, false, false)
+        }
+        password.length < 8 -> {
+            validationError(false, true, false)
+        }
+        rePassword != password -> {
+            validationError(false, false, true)
+        }
+        else -> {
+            validationError(false, false, false)
+            register(context, username, email, password)
+        }
+    }
+}
+
+private suspend fun emailValidation(email: String): Int {
+    // >= 0 mean response successful
+    // < 0 mean response error
+    // default is 0
+    var result = 0
+
+    UserClient.instance.getUser(email)
+        .enqueue(object : retrofit2.Callback<List<GetUserItem>>{
+            override fun onResponse(
+                call: Call<List<GetUserItem>>,
+                response: Response<List<GetUserItem>>
+            ) {
+                result = if (response.isSuccessful) {
+                    response.body()!!.size
+                } else {
+                    -1
+                }
+            }
+            override fun onFailure(call: Call<List<GetUserItem>>, t: Throwable) {
+                result = -2
+            }
+        })
+    delay(2000)
+    return result
+}
+
+private fun register(
+    context: Context,
+    username: String,
+    email: String,
+    password: String
+) {
+    UserClient.instance.postUser(RequestUser(email, password, username, ""))
+        .enqueue(object : retrofit2.Callback<GetUserItem>{
+            override fun onResponse(call: Call<GetUserItem>, response: Response<GetUserItem>) {
+                if (response.isSuccessful) {
+                    toast(context, "Register success")
+                } else {
+                    toast(context, "Register failed\n" + response.message())
+                }
+            }
+
+            override fun onFailure(call: Call<GetUserItem>, t: Throwable) {
+                toast(context, "Register error\nNo connection")
+            }
+        })
 }
