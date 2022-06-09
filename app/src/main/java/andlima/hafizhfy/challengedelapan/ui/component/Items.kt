@@ -1,9 +1,7 @@
 package andlima.hafizhfy.challengedelapan.ui.component
 
 import andlima.hafizhfy.challengedelapan.R
-import andlima.hafizhfy.challengedelapan.model.Coba
 import andlima.hafizhfy.challengedelapan.model.film.GetMockFilmResponse
-import andlima.hafizhfy.challengedelapan.model.film.GetMovies
 import andlima.hafizhfy.challengedelapan.ui.theme.Dim
 import andlima.hafizhfy.challengedelapan.ui.theme.DimEnd
 import andlima.hafizhfy.challengedelapan.ui.theme.DimStart

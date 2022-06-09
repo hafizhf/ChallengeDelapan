@@ -1,40 +1,20 @@
 package andlima.hafizhfy.challengedelapan.ui.component
 
-import andlima.hafizhfy.challengedelapan.model.Coba
-import andlima.hafizhfy.challengedelapan.model.CobaRepository
 import andlima.hafizhfy.challengedelapan.model.film.GetMockFilmResponse
-import andlima.hafizhfy.challengedelapan.model.film.GetMovies
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
 fun RecyclerMovie(movies: List<GetMockFilmResponse>, scrollState: LazyListState, onClick: (GetMockFilmResponse) -> Unit) {
-//    val repo = CobaRepository()
-//    val data = repo.getCoba()
-
     val titleList = listOf("Let's find something to watch now.", "Popular", "New Movies")
-
-//    var isOdd = 1
-//    LazyVerticalGrid(
-//        cells = GridCells.Fixed(2)
-//    ) {
-//        items(data) { item ->
-//            if (isOdd % 2 != 0) {
-//                ItemMovie(item, paddingEnd = 10.dp)
-//            } else {
-//                ItemMovie(item, paddingStart = 10.dp)
-//            }
-//            isOdd++
-//        }
-//    }
 
     var isOdd = 1
     titleList.forEach { title ->
@@ -61,6 +41,49 @@ fun RecyclerMovie(movies: List<GetMockFilmResponse>, scrollState: LazyListState,
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SimilarMovies(movies: List<GetMockFilmResponse>, onClick: (GetMockFilmResponse) -> Unit) {
+
+    HeaderStickyTitle("Similar movies", 20.dp)
+    LazyRow {
+        item {
+            Spacer(modifier = Modifier.width(20.dp))
+        }
+        items(movies) { movie ->
+            ItemMovieHorizontal(
+                movies = movie,
+                paddingEnd = 20.dp
+            ) {
+                onClick(it)
+            }
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@ExperimentalFoundationApi
+@Composable
+fun ExperimentalRecyclerMovie(movies: List<GetMockFilmResponse>, scrollState: LazyListState, onClick: (GetMockFilmResponse) -> Unit) {
+//    val repo = CobaRepository()
+//    val data = repo.getCoba()
+
+//    var isOdd = 1
+//    LazyVerticalGrid(
+//        cells = GridCells.Fixed(2)
+//    ) {
+//        items(data) { item ->
+//            if (isOdd % 2 != 0) {
+//                ItemMovie(item, paddingEnd = 10.dp)
+//            } else {
+//                ItemMovie(item, paddingStart = 10.dp)
+//            }
+//            isOdd++
+//        }
+//    }
+
 
 //    titleList.forEach { title ->
 //        LazyColumn(
@@ -68,7 +91,7 @@ fun RecyclerMovie(movies: List<GetMockFilmResponse>, scrollState: LazyListState,
 //        ) {
 //            stickyHeader {
 //                HeaderStickyTitle(title = title)
-//                Log.d("JUDUL", title)
+//                Log.d("Title", title)
 //            }
 //            item {
 //                var isOdd = 1
@@ -85,7 +108,7 @@ fun RecyclerMovie(movies: List<GetMockFilmResponse>, scrollState: LazyListState,
 //                        isOdd++
 //                    }
 //                }
-//                Log.d("JUDUL NON_STICKY", title)
+//                Log.d("Title NON_STICKY", title)
 //            }
 //        }
 //    }

@@ -19,11 +19,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
-@Composable
-fun coba() {
-    InputField("A")
-}
-
 @SuppressLint("ComposableNaming")
 @Composable
 fun InputField(label: String, isRequired: Boolean? = null, isInputError: Boolean?= null, errorMessage: String? = null): String {
@@ -59,7 +54,7 @@ fun InputField(label: String, isRequired: Boolean? = null, isInputError: Boolean
 
     if (isRequired == true) {
         when {
-            isError == true && string == "" -> {
+            isError && string == "" -> {
                 ErrorText(text = "Field cannot be empty")
             }
             isInputError == true -> {

@@ -228,23 +228,3 @@ fun DefaultPreview4() {
         )
     }
 }
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun SimilarMovies(movies: List<GetMockFilmResponse>, onClick: (GetMockFilmResponse) -> Unit) {
-
-    HeaderStickyTitle("Similar movies", 20.dp)
-    LazyRow {
-        item {
-            Spacer(modifier = Modifier.width(20.dp))
-        }
-        items(movies) { movie ->
-            ItemMovieHorizontal(
-                movies = movie,
-                paddingEnd = 20.dp
-            ) {
-                onClick(it)
-            }
-        }
-    }
-}

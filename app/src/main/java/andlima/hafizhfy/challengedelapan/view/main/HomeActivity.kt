@@ -31,22 +31,19 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.max
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 
+@DelicateCoroutinesApi
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
 
     // Get data store
-    lateinit var userManager: UserManager
+    private lateinit var userManager: UserManager
 
     // Used for double back to exit app
     private var doubleBackToExit = false
@@ -95,7 +92,7 @@ class HomeActivity : ComponentActivity() {
                         doubleBackToExit = true
                         toast(this@HomeActivity, "Press again to exit")
 
-                        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                        Handler(Looper.getMainLooper()).postDelayed({
                             kotlin.run {
                                 doubleBackToExit = false
                             }
@@ -106,6 +103,7 @@ class HomeActivity : ComponentActivity() {
     }
 }
 
+@DelicateCoroutinesApi
 @OptIn(ExperimentalMaterialApi::class)
 @ExperimentalFoundationApi
 @Composable
@@ -149,6 +147,7 @@ fun Home(movies: List<GetMockFilmResponse>, userManager: UserManager, username: 
     }
 }
 
+@DelicateCoroutinesApi
 private fun proceedLogout(context: Context, userManager: UserManager) {
     GlobalScope.launch {
         userManager.clearData()
@@ -159,11 +158,13 @@ private fun proceedLogout(context: Context, userManager: UserManager) {
     context.startActivity(gotoLogin)
 }
 
+@DelicateCoroutinesApi
 @ExperimentalFoundationApi
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun DefaultPreview3() {
+    val context = LocalContext.current
     ChallengeDelapanTheme {
-//        Home(DummyRepository().getDummyMovie())
+        Home(DummyRepository().getDummyMovie(), UserManager(context), "User")
     }
 }

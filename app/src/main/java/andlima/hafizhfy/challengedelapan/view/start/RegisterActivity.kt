@@ -12,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import andlima.hafizhfy.challengedelapan.ui.theme.ChallengeDelapanTheme
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -20,17 +19,14 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import androidx.compose.runtime.saveable.rememberSaveable
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
 
-
+@DelicateCoroutinesApi
 class RegisterActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +41,7 @@ class RegisterActivity : ComponentActivity() {
     }
 }
 
+@DelicateCoroutinesApi
 @Composable
 private fun Register() {
     val context = LocalContext.current
@@ -123,6 +120,7 @@ private fun Register() {
     }
 }
 
+@DelicateCoroutinesApi
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun DefaultPreview2() {
@@ -133,6 +131,7 @@ private fun DefaultPreview2() {
 
 // END OF UI CODE ===============================================================================###
 
+@DelicateCoroutinesApi
 private suspend fun registerAuth(
     context: Context,
     username: String,

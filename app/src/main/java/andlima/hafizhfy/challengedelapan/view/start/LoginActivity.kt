@@ -10,42 +10,33 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.tooling.preview.Preview
 import andlima.hafizhfy.challengedelapan.ui.theme.ChallengeDelapanTheme
-import andlima.hafizhfy.challengedelapan.ui.theme.Dim
-import andlima.hafizhfy.challengedelapan.ui.theme.DimEnd
-import andlima.hafizhfy.challengedelapan.ui.theme.Main
 import andlima.hafizhfy.challengedelapan.view.main.HomeActivity
-import android.app.Activity
-import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.OnBackPressedCallback
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.asLiveData
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Response
 
+@DelicateCoroutinesApi
 class LoginActivity : ComponentActivity() {
 
     // Get data store
-    lateinit var userManager: UserManager
+    private lateinit var userManager: UserManager
 
     // Used for double back to exit app
     private var doubleBackToExit = false
@@ -86,7 +77,7 @@ class LoginActivity : ComponentActivity() {
                         doubleBackToExit = true
                         toast(this@LoginActivity, "Press again to exit")
 
-                        Handler(Looper.getMainLooper()).postDelayed(Runnable {
+                        Handler(Looper.getMainLooper()).postDelayed({
                             kotlin.run {
                                 doubleBackToExit = false
                             }
@@ -97,6 +88,7 @@ class LoginActivity : ComponentActivity() {
     }
 }
 
+@DelicateCoroutinesApi
 @Composable
 private fun Login(userManager: UserManager) {
     val context = LocalContext.current
@@ -160,6 +152,7 @@ private fun Login(userManager: UserManager) {
     }
 }
 
+@DelicateCoroutinesApi
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun DefaultPreview() {
@@ -172,6 +165,7 @@ private fun DefaultPreview() {
 
 // END OF UI CODE ===============================================================================###
 
+@DelicateCoroutinesApi
 private fun loginAuth(
     context: Context, 
     email: String, 
@@ -219,6 +213,8 @@ private fun loginAuth(
         })
 }
 
+//@DelicateCoroutinesApi
+@DelicateCoroutinesApi
 private fun login(
     userManager: UserManager,
     userData: GetUserItem
