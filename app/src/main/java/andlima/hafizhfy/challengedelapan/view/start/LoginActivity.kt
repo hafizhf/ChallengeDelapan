@@ -10,6 +10,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.ui.tooling.preview.Preview
 import andlima.hafizhfy.challengedelapan.ui.theme.ChallengeDelapanTheme
+import andlima.hafizhfy.challengedelapan.ui.theme.Dim
+import andlima.hafizhfy.challengedelapan.ui.theme.DimEnd
+import andlima.hafizhfy.challengedelapan.ui.theme.Main
 import andlima.hafizhfy.challengedelapan.view.main.HomeActivity
 import android.app.Activity
 import android.app.ActivityOptions
@@ -18,12 +21,18 @@ import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.LifecycleOwner
@@ -91,52 +100,63 @@ class LoginActivity : ComponentActivity() {
 @Composable
 private fun Login(userManager: UserManager) {
     val context = LocalContext.current
+    var isLoading by remember { mutableStateOf(false) }
 
-    Column(modifier = Modifier.padding(25.dp)) {
-        HeaderStart()
+    Box(
+        Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()) {
+        Column(modifier = Modifier.padding(25.dp)) {
+            HeaderStart()
 
-        Spacer(modifier = Modifier.weight(1.0F))
-        
-        H1(text = "Login")
+            Spacer(modifier = Modifier.weight(1.0F))
 
-        var isEmailError by rememberSaveable { mutableStateOf(false) }
-        var email by remember { mutableStateOf("") }
-        email = InputFieldEmail("Email", isEmailError)
+            H1(text = "Login")
 
-        var isPasswordError by rememberSaveable { mutableStateOf(false) }
-        var password by remember { mutableStateOf("") }
-        password = InputFieldPassword("Password", isPasswordError, "Wrong password")
+            var isEmailError by rememberSaveable { mutableStateOf(false) }
+            var email by remember { mutableStateOf("") }
+            email = InputFieldEmail("Email", isEmailError)
 
-        Spacer(modifier = Modifier.weight(1.0F))
-        Spacer(modifier = Modifier.weight(0.3F))
+            var isPasswordError by rememberSaveable { mutableStateOf(false) }
+            var password by remember { mutableStateOf("") }
+            password = InputFieldPassword("Password", isPasswordError, "Wrong password")
 
-        ButtonMain("Login") {
-            isEmailError = email == ""
-            isPasswordError = password == ""
+            Spacer(modifier = Modifier.weight(1.0F))
+            Spacer(modifier = Modifier.weight(0.3F))
 
-            if (email != "" && password != "") {
-                loginAuth(context, email, password, userManager) { emailResult, passwordResult ->
-                    isEmailError = emailResult
-                    isPasswordError = passwordResult
+            ButtonMain("Login") {
+                isEmailError = email == ""
+                isPasswordError = password == ""
 
-                    if (!isEmailError && !isPasswordError) {
-                        toast(context, "Welcome back")
-                        val gotoHome = Intent(context, HomeActivity::class.java)
-                        gotoHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK) // since idk how to finish(), hopefully this is good
-                        context.startActivity(gotoHome)
+                if (email != "" && password != "") {
+                    isLoading = true
+                    loginAuth(context, email, password, userManager) { emailResult, passwordResult ->
+                        isEmailError = emailResult
+                        isPasswordError = passwordResult
+
+                        if (!isEmailError && !isPasswordError) {
+                            isLoading = false
+                            toast(context, "Welcome back")
+                            val gotoHome = Intent(context, HomeActivity::class.java)
+                            gotoHome.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK) // since idk how to finish(), hopefully this is good
+                            context.startActivity(gotoHome)
+                        } else {
+                            isLoading = false
+                        }
                     }
                 }
             }
-        }
 
-        Spacer(modifier = Modifier.padding(bottom = 5.dp))
+            Spacer(modifier = Modifier.padding(bottom = 5.dp))
 
-        Row(modifier = Modifier.align(CenterHorizontally)) {
-            Body1(text = "Don't have account? ")
-            Body1Clickable("Register") {
-                context.startActivity(Intent(context, RegisterActivity::class.java))
+            Row(modifier = Modifier.align(CenterHorizontally)) {
+                Body1(text = "Don't have account? ")
+                Body1Clickable("Register") {
+                    context.startActivity(Intent(context, RegisterActivity::class.java))
+                }
             }
         }
+        ProgressLoading(loadingState = isLoading, message = "Logging In")
     }
 }
 
@@ -144,7 +164,9 @@ private fun Login(userManager: UserManager) {
 @Composable
 private fun DefaultPreview() {
     ChallengeDelapanTheme {
+        val context = LocalContext.current
 //        Login() // No preview due to requirement an activity for the function
+        Login(UserManager(context))
     }
 }
 

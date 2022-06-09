@@ -29,7 +29,7 @@ val Typography = Typography(
     h3 = TextStyle(
         fontFamily = ProductSans,
         fontWeight = FontWeight.Bold,
-        fontSize = 17.sp
+        fontSize = 16.sp
     ),
     h4 = TextStyle(
         fontFamily = ProductSans,

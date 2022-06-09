@@ -3,6 +3,7 @@ package andlima.hafizhfy.challengedelapan.ui.component
 import andlima.hafizhfy.challengedelapan.R
 import andlima.hafizhfy.challengedelapan.ui.theme.Main
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -48,10 +49,14 @@ fun HeaderStart() {
 }
 
 @Composable
-fun HeaderStickyTitle(title: String) {
+fun HeaderStickyTitle(title: String, paddingStart: Dp? = null) {
     Spacer(modifier = Modifier.padding(bottom = 20.dp))
 
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = paddingStart ?: 0.dp)
+    ) {
         Row(modifier = Modifier.width(230.dp)) {
             H1(text = title)
         }
@@ -59,30 +64,44 @@ fun HeaderStickyTitle(title: String) {
 
     Spacer(modifier = Modifier.padding(bottom = 7.dp))
 
-    HR()
+    HR(paddingStart = paddingStart ?: 0.dp)
 
     Spacer(modifier = Modifier.padding(bottom = 10.dp))
 }
 
 @Composable
-fun HeaderHome() {
-    Row(modifier = Modifier.padding(top = 25.dp)) {
-        Column {
-            H4(text = "Welcome,")
-            H2(text = "User", color = Main)
-        }
-        Spacer(modifier = Modifier.weight(1.0F))
+fun HeaderHome(modifier: Modifier? = Modifier, username: String? = null, paddingTop: Dp? = null, onClick: (Any) -> Unit) {
+    Row(
+        modifier = Modifier
+            .padding(top = paddingTop ?: 25.dp)
+    ) {
+        Row(modifier = modifier!!) {
+            Column {
+                H4(text = "Welcome,")
+                H2(
+                    text = username ?: "User",
+                    color = Main
+                )
+            }
+            Spacer(modifier = Modifier.weight(1.0F))
 
-        Icon(Icons.Rounded.Search, contentDescription = "Search")
-        Spacer(modifier = Modifier.padding(start = 5.dp))
-        Icon(Icons.Rounded.FavoriteBorder, contentDescription = "Favorite")
-        Spacer(modifier = Modifier.padding(start = 5.dp))
-        Icon(Icons.Rounded.Person, contentDescription = "User")
+            Icon(Icons.Rounded.Search, contentDescription = "Search")
+            Spacer(modifier = Modifier.padding(start = 5.dp))
+            Icon(Icons.Rounded.FavoriteBorder, contentDescription = "Favorite")
+            Spacer(modifier = Modifier.padding(start = 5.dp))
+            Icon(
+                Icons.Rounded.Person,
+                contentDescription = "User",
+                Modifier.clickable {
+                    onClick(true)
+                }
+            )
+        }
     }
 }
 
 @Composable
-fun HR(width: Dp? = null, height: Dp? = null) {
+fun HR(width: Dp? = null, height: Dp? = null, paddingStart: Dp? = null) {
     Card(
         shape = RoundedCornerShape(50.dp),
         backgroundColor = Main,
@@ -91,6 +110,7 @@ fun HR(width: Dp? = null, height: Dp? = null) {
             .width(width ?: 50.dp)
             .height(height ?: 3.dp)
             .shadow(0.dp)
+            .padding(start = paddingStart ?: 0.dp)
     ) {}
 }
 
