@@ -43,21 +43,21 @@ class UserManager(context: Context) {
         }
     }
 
-    suspend fun updateCurrentUserRealTimeData(
-        username: String,
-        avatar: String,
-        completeName: String,
-        address: String,
-        dateOfBirth: String
-    ) {
-        dataStore.edit {
-            it[USERNAME] = username
-            it[AVATAR] = avatar
-            it[COMPLETE_NAME] = completeName
-            it[ADDRESS] = address
-            it[DATE_OF_BIRTH] = dateOfBirth
-        }
-    }
+//    suspend fun updateCurrentUserRealTimeData(
+//        username: String,
+//        avatar: String,
+//        completeName: String,
+//        address: String,
+//        dateOfBirth: String
+//    ) {
+//        dataStore.edit {
+//            it[USERNAME] = username
+//            it[AVATAR] = avatar
+//            it[COMPLETE_NAME] = completeName
+//            it[ADDRESS] = address
+//            it[DATE_OF_BIRTH] = dateOfBirth
+//        }
+//    }
 
     val username : Flow<String> = dataStore.data.map {
         it[USERNAME] ?: ""
@@ -67,9 +67,9 @@ class UserManager(context: Context) {
         it[EMAIL] ?: ""
     }
 
-    val avatar : Flow<String> = dataStore.data.map {
-        it[AVATAR] ?: ""
-    }
+//    val avatar : Flow<String> = dataStore.data.map {
+//        it[AVATAR] ?: ""
+//    }
 
     val password : Flow<String> = dataStore.data.map {
         it[PASSWORD] ?: ""
@@ -79,17 +79,17 @@ class UserManager(context: Context) {
         it[ID] ?: ""
     }
 
-    val completeName : Flow<String> = dataStore.data.map {
-        it[COMPLETE_NAME] ?: ""
-    }
-
-    val address : Flow<String> = dataStore.data.map {
-        it[ADDRESS] ?: ""
-    }
-
-    val dateOfBirth : Flow<String> = dataStore.data.map {
-        it[DATE_OF_BIRTH] ?: ""
-    }
+//    val completeName : Flow<String> = dataStore.data.map {
+//        it[COMPLETE_NAME] ?: ""
+//    }
+//
+//    val address : Flow<String> = dataStore.data.map {
+//        it[ADDRESS] ?: ""
+//    }
+//
+//    val dateOfBirth : Flow<String> = dataStore.data.map {
+//        it[DATE_OF_BIRTH] ?: ""
+//    }
 
     suspend fun clearData() {
         dataStore.edit {

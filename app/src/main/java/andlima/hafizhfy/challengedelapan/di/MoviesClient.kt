@@ -14,7 +14,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object MoviesClient {
-    const val BASE_URL = "https://6254434789f28cf72b5aed6a.mockapi.io/"
+    private const val BASE_URL = "https://6254434789f28cf72b5aed6a.mockapi.io/"
 //    const val BASE_URL = "https://api.themoviedb.org/3/"
 
     private  val logging : HttpLoggingInterceptor

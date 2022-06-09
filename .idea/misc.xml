@@ -10,12 +10,15 @@
         <entry key="..\:/Users/User/AndroidStudioProjects/ChallengeDelapan/app/src/main/res/drawable/ic_logo.xml" value="0.11944444444444445" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ChallengeDelapan/app/src/main/res/drawable/ic_play.xml" value="0.22552083333333334" />
         <entry key="..\:/Users/User/AndroidStudioProjects/ChallengeDelapan/app/src/main/res/drawable/ic_show_pwd.xml" value="0.1527777777777778" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ChallengeDelapan/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Users/User/AndroidStudioProjects/ChallengeDelapan/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
       </map>
     </option>
   </component>
   <component name="EntryPointsManager">
-    <list size="1">
+    <list size="2">
       <item index="0" class="java.lang.String" itemvalue="androidx.compose.runtime.Composable" />
+      <item index="1" class="java.lang.String" itemvalue="kotlinx.parcelize.Parcelize" />
     </list>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
