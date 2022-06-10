@@ -9,15 +9,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun H1(text: String, color: Color? = null) {
+fun H1(text: String, color: Color? = null, size: TextUnit? = null) {
     Text(
         text = text,
         style = MaterialTheme.typography.h1,
-        color = color ?: MainGrey
+        color = color ?: MainGrey,
+        fontSize = size ?: 24.sp
     )
 }
 

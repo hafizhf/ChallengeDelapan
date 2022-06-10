@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">ChallengeDelapan</string>
+    <string name="name">Moovie</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 </resources>
